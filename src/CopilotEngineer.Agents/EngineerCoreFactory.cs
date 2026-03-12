@@ -8,7 +8,12 @@ public static class EngineerCoreFactory
 {
     public static IEngineerCore CreateDefault()
     {
+        var repositoryRoot = MemoryPaths.ResolveRepositoryRoot();
         var skillRegistry = SkillRegistration.CreateDefault();
+        var memoryService = new MemoryService(
+            new ProjectContextLoader(Path.Combine(repositoryRoot, "memory", "project-context.yaml")),
+            new ConventionsLoader(Path.Combine(repositoryRoot, "memory", "conventions.yaml")),
+            new BugMemoryRepository(Path.Combine(repositoryRoot, "memory", "bug-memory.db")));
 
         IEngineerSpecialist[] specialists =
         [
@@ -21,6 +26,6 @@ public static class EngineerCoreFactory
             new IntentRouter(),
             new AgentRegistry(specialists),
             new WorkflowExecutor(),
-            new ProjectContextProvider());
+            memoryService);
     }
 }

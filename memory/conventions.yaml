@@ -6,3 +6,4 @@ conventions:
   patterns:
     - dependency-injection
     - modular-skills
+    - engineer-core-orchestration

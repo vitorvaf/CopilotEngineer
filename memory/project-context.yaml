@@ -1,7 +1,19 @@
 project:
   name: Copilot Engineer Pessoal
+  architecture: Engineer Core + Specialist Agents + Memory + Workflow Engine
   stack:
     - .NET 8
     - C#
     - Semantic Kernel
-  architecture: Engineer Core + Specialist Agents + Memory + Workflow Engine
+    - System.CommandLine
+    - SQLite
+  workflows:
+    - issue-analysis
+    - bug-investigation
+    - sql-analysis
+  tools:
+    - read_file
+    - search_code
+    - git_diff
+    - run_dotnet_build
+    - run_dotnet_tests

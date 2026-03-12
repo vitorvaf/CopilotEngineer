@@ -4,11 +4,24 @@ public sealed record UserRequest(
     string Input,
     IReadOnlyDictionary<string, string>? Metadata = null);
 
+public sealed record BugMemoryRecord(
+    long Id,
+    string Title,
+    string Summary,
+    string RootCause,
+    string Resolution,
+    IReadOnlyCollection<string> Tags,
+    DateTimeOffset CreatedAtUtc);
+
 public sealed record EngineerContext(
     string ProjectName,
     string ArchitectureSummary,
     IReadOnlyCollection<string> AvailableWorkflows,
-    IReadOnlyCollection<string> AvailableTools);
+    IReadOnlyCollection<string> AvailableTools,
+    IReadOnlyCollection<string> ProjectStack,
+    IReadOnlyDictionary<string, string> NamingConventions,
+    IReadOnlyCollection<string> DesignPatterns,
+    IReadOnlyCollection<BugMemoryRecord> RelatedBugMemories);
 
 public sealed record Intent(
     string Name,
