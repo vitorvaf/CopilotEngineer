@@ -14,6 +14,13 @@ public sealed class IntentRouter : IIntentRouter
             return Intent.Sql;
         }
 
+        if (normalized.Contains("issue", StringComparison.Ordinal) ||
+            normalized.Contains("feature", StringComparison.Ordinal) ||
+            normalized.Contains("implementar", StringComparison.Ordinal))
+        {
+            return Intent.Issue;
+        }
+
         if (normalized.Contains("debug", StringComparison.Ordinal) || normalized.Contains("erro", StringComparison.Ordinal))
         {
             return Intent.Debug;

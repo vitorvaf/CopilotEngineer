@@ -29,6 +29,7 @@ public sealed record Intent(
     bool RequiresWorkflow)
 {
     public static readonly Intent Ask = new("ask", "CodeSpecialist", false);
+    public static readonly Intent Issue = new("issue", "CodeSpecialist", true);
     public static readonly Intent Debug = new("debug", "DebugSpecialist", true);
     public static readonly Intent Sql = new("sql", "DatabaseSpecialist", true);
     public static readonly Intent Review = new("review", "CodeSpecialist", false);

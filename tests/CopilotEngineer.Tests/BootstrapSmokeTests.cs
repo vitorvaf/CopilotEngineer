@@ -12,9 +12,17 @@ public sealed class BootstrapSmokeTests
     public async Task EngineerCoreRoutesBootstrapRequestsCorrectly()
     {
         var engineerCore = EngineerCoreFactory.CreateDefault();
+        var issueResponse = await engineerCore.ProcessAsync(new UserRequest("implementar feature de exportacao CSV"));
+        Assert.Equal("issue", issueResponse.Intent.Name);
+        Assert.Equal("issue-analysis", issueResponse.Source);
+
         var debugResponse = await engineerCore.ProcessAsync(new UserRequest("debug NullReferenceException na CLI"));
         Assert.Equal("debug", debugResponse.Intent.Name);
         Assert.Equal("bug-investigation", debugResponse.Source);
+
+        var sqlResponse = await engineerCore.ProcessAsync(new UserRequest("sql select * from orders"));
+        Assert.Equal("sql", sqlResponse.Intent.Name);
+        Assert.Equal("sql-analysis", sqlResponse.Source);
 
         var reviewResponse = await engineerCore.ProcessAsync(new UserRequest("review do bootstrap inicial"));
         Assert.Equal("review", reviewResponse.Intent.Name);

@@ -22,10 +22,12 @@ public static class EngineerCoreFactory
             new CodeSpecialistAgent(skillRegistry)
         ];
 
+        var agentRegistry = new AgentRegistry(specialists);
+
         return new EngineerCore(
             new IntentRouter(),
-            new AgentRegistry(specialists),
-            new WorkflowExecutor(),
+            agentRegistry,
+            new WorkflowExecutor(agentRegistry),
             memoryService);
     }
 }
