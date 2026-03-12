@@ -9,6 +9,14 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/CopilotEngineer.Agents/CopilotEngineer.Agents.csproj" />
+    <ProjectReference Include="../../src/CopilotEngineer.Cli/CopilotEngineer.Cli.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.CommandLine">
+      <HintPath>../../src/CopilotEngineer.Cli/lib/System.CommandLine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
