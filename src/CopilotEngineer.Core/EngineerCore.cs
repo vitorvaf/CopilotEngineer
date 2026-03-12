@@ -4,23 +4,24 @@ public sealed class EngineerCore(
     IIntentRouter intentRouter,
     IAgentRegistry agentRegistry,
     IWorkflowExecutor workflowExecutor,
-    IContextProvider contextProvider)
+    IContextProvider contextProvider) : IEngineerCore
 {
-    public async Task<EngineerResponse> ProcessAsync(EngineerRequest request, CancellationToken cancellationToken = default)
+    public async Task<EngineResponse> ProcessAsync(UserRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.Input);
 
-        var intent = intentRouter.Route(request.Input);
+        var intent = intentRouter.Route(request);
         var context = await contextProvider.BuildAsync(request, intent, cancellationToken);
 
         if (intent.RequiresWorkflow && workflowExecutor.HasWorkflow(intent))
         {
             var workflowResult = await workflowExecutor.ExecuteAsync(intent, request, context, cancellationToken);
-            return new EngineerResponse(intent, workflowResult.Summary, workflowResult.WorkflowName, workflowResult.Steps);
+            return new EngineResponse(intent, workflowResult.Summary, workflowResult.WorkflowName, workflowResult.Steps);
         }
 
-        var agent = agentRegistry.Resolve(intent);
-        var agentResult = await agent.ExecuteAsync(request, context, cancellationToken);
-        return new EngineerResponse(intent, agentResult.Summary, agentResult.AgentName, agentResult.Recommendations);
+        var specialist = agentRegistry.Resolve(intent);
+        var agentResult = await specialist.ExecuteAsync(request, context, cancellationToken);
+        return new EngineResponse(intent, agentResult.Summary, agentResult.AgentName, agentResult.Recommendations);
     }
 }

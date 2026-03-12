@@ -4,7 +4,7 @@ namespace CopilotEngineer.Memory;
 
 public sealed class ProjectContextProvider : IContextProvider
 {
-    public Task<EngineerContext> BuildAsync(EngineerRequest request, EngineeringIntent intent, CancellationToken cancellationToken = default)
+    public Task<EngineerContext> BuildAsync(UserRequest request, Intent intent, CancellationToken cancellationToken = default)
     {
         var context = new EngineerContext(
             "Copilot Engineer Pessoal",

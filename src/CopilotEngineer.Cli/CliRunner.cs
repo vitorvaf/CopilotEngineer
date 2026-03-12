@@ -1,7 +1,5 @@
 using CopilotEngineer.Agents;
 using CopilotEngineer.Core;
-using CopilotEngineer.Memory;
-using CopilotEngineer.Workflows;
 
 namespace CopilotEngineer.Cli;
 
@@ -13,24 +11,12 @@ public static class CliRunner
             ? "copilot ask bootstrap status"
             : string.Join(' ', args);
 
-        var agents = new IEngineerAgent[]
-        {
-            new DebugSpecialistAgent(),
-            new DatabaseSpecialistAgent(),
-            new CodeSpecialistAgent()
-        };
-
-        var engineerCore = new EngineerCore(
-            new IntentRouter(),
-            new AgentRegistry(agents),
-            new WorkflowExecutor(),
-            new ProjectContextProvider());
-
-        var response = await engineerCore.ProcessAsync(new EngineerRequest(input), cancellationToken);
+        var engineerCore = EngineerCoreFactory.CreateDefault();
+        var response = await engineerCore.ProcessAsync(new UserRequest(input), cancellationToken);
 
         return
         [
-            $"Intent: {response.Intent.Type}",
+            $"Intent: {response.Intent.Name}",
             $"Source: {response.Source}",
             response.Summary,
             .. response.Recommendations.Select(recommendation => $"- {recommendation}")

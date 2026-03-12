@@ -1,34 +1,39 @@
 namespace CopilotEngineer.Core;
 
-public interface IIntentRouter
+public interface IEngineerCore
 {
-    EngineeringIntent Route(string request);
+    Task<EngineResponse> ProcessAsync(UserRequest request, CancellationToken cancellationToken = default);
 }
 
-public interface IEngineerAgent
+public interface IIntentRouter
+{
+    Intent Route(UserRequest request);
+}
+
+public interface IEngineerSpecialist
 {
     string Name { get; }
 
-    bool CanHandle(EngineeringIntent intent);
-
-    Task<AgentExecutionResult> ExecuteAsync(EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default);
+    Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default);
 }
 
 public interface IAgentRegistry
 {
-    IEngineerAgent Resolve(EngineeringIntent intent);
+    void Register(IEngineerSpecialist specialist);
 
-    IReadOnlyCollection<IEngineerAgent> List();
+    IEngineerSpecialist Resolve(Intent intent);
+
+    IReadOnlyCollection<IEngineerSpecialist> List();
 }
 
 public interface IWorkflowExecutor
 {
-    bool HasWorkflow(EngineeringIntent intent);
+    bool HasWorkflow(Intent intent);
 
-    Task<WorkflowExecutionResult> ExecuteAsync(EngineeringIntent intent, EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default);
+    Task<WorkflowExecutionResult> ExecuteAsync(Intent intent, UserRequest request, EngineerContext context, CancellationToken cancellationToken = default);
 }
 
 public interface IContextProvider
 {
-    Task<EngineerContext> BuildAsync(EngineerRequest request, EngineeringIntent intent, CancellationToken cancellationToken = default);
+    Task<EngineerContext> BuildAsync(UserRequest request, Intent intent, CancellationToken cancellationToken = default);
 }

@@ -2,27 +2,28 @@ namespace CopilotEngineer.Core;
 
 public sealed class IntentRouter : IIntentRouter
 {
-    public EngineeringIntent Route(string request)
+    public Intent Route(UserRequest request)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(request);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.Input);
 
-        var normalized = request.Trim().ToLowerInvariant();
+        var normalized = request.Input.Trim().ToLowerInvariant();
 
         if (normalized.Contains("sql", StringComparison.Ordinal))
         {
-            return EngineeringIntent.Sql;
+            return Intent.Sql;
         }
 
         if (normalized.Contains("debug", StringComparison.Ordinal) || normalized.Contains("erro", StringComparison.Ordinal))
         {
-            return EngineeringIntent.Debug;
+            return Intent.Debug;
         }
 
         if (normalized.Contains("review", StringComparison.Ordinal) || normalized.Contains("refactor", StringComparison.Ordinal))
         {
-            return EngineeringIntent.Review;
+            return Intent.Review;
         }
 
-        return EngineeringIntent.Ask;
+        return Intent.Ask;
     }
 }

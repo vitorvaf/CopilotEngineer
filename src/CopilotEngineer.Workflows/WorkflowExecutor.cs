@@ -6,17 +6,17 @@ public sealed class WorkflowExecutor : IWorkflowExecutor
 {
     private static readonly Dictionary<string, string> WorkflowNames = new(StringComparer.OrdinalIgnoreCase)
     {
-        [EngineeringIntent.Debug.Type] = "bug-investigation",
-        [EngineeringIntent.Sql.Type] = "sql-analysis"
+        [Intent.Debug.Name] = "bug-investigation",
+        [Intent.Sql.Name] = "sql-analysis"
     };
 
-    public bool HasWorkflow(EngineeringIntent intent) => WorkflowNames.ContainsKey(intent.Type);
+    public bool HasWorkflow(Intent intent) => WorkflowNames.ContainsKey(intent.Name);
 
-    public Task<WorkflowExecutionResult> ExecuteAsync(EngineeringIntent intent, EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public Task<WorkflowExecutionResult> ExecuteAsync(Intent intent, UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
-        if (!WorkflowNames.TryGetValue(intent.Type, out var workflowName))
+        if (!WorkflowNames.TryGetValue(intent.Name, out var workflowName))
         {
-            throw new InvalidOperationException($"Workflow nao configurado para '{intent.Type}'.");
+            throw new InvalidOperationException($"Workflow nao configurado para '{intent.Name}'.");
         }
 
         var result = new WorkflowExecutionResult(

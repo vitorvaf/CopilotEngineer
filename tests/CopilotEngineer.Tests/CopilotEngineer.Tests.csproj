@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/CopilotEngineer.Agents/CopilotEngineer.Agents.csproj" />
-    <ProjectReference Include="../../src/CopilotEngineer.Core/CopilotEngineer.Core.csproj" />
-    <ProjectReference Include="../../src/CopilotEngineer.Memory/CopilotEngineer.Memory.csproj" />
-    <ProjectReference Include="../../src/CopilotEngineer.Workflows/CopilotEngineer.Workflows.csproj" />
   </ItemGroup>
 
 </Project>

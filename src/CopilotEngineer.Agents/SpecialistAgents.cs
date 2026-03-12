@@ -2,13 +2,11 @@ using CopilotEngineer.Core;
 
 namespace CopilotEngineer.Agents;
 
-public sealed class DebugSpecialistAgent : IEngineerAgent
+public sealed class DebugSpecialistAgent : IEngineerSpecialist
 {
     public string Name => "DebugSpecialist";
 
-    public bool CanHandle(EngineeringIntent intent) => intent.Type == EngineeringIntent.Debug.Type;
-
-    public Task<AgentExecutionResult> ExecuteAsync(EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
         var result = new AgentExecutionResult(
             Name,
@@ -19,13 +17,11 @@ public sealed class DebugSpecialistAgent : IEngineerAgent
     }
 }
 
-public sealed class DatabaseSpecialistAgent : IEngineerAgent
+public sealed class DatabaseSpecialistAgent : IEngineerSpecialist
 {
     public string Name => "DatabaseSpecialist";
 
-    public bool CanHandle(EngineeringIntent intent) => intent.Type == EngineeringIntent.Sql.Type;
-
-    public Task<AgentExecutionResult> ExecuteAsync(EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
         var result = new AgentExecutionResult(
             Name,
@@ -36,13 +32,11 @@ public sealed class DatabaseSpecialistAgent : IEngineerAgent
     }
 }
 
-public sealed class CodeSpecialistAgent : IEngineerAgent
+public sealed class CodeSpecialistAgent : IEngineerSpecialist
 {
     public string Name => "CodeSpecialist";
 
-    public bool CanHandle(EngineeringIntent intent) => intent.Type is "review" or "ask";
-
-    public Task<AgentExecutionResult> ExecuteAsync(EngineerRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
         var result = new AgentExecutionResult(
             Name,
