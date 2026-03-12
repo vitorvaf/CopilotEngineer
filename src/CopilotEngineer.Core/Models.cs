@@ -26,6 +26,11 @@ public sealed record AgentExecutionResult(
     string Summary,
     IReadOnlyCollection<string> Recommendations);
 
+public sealed record SkillExecutionResult(
+    string SkillName,
+    string Summary,
+    IReadOnlyCollection<string> Outputs);
+
 public sealed record WorkflowExecutionResult(
     string WorkflowName,
     string Summary,

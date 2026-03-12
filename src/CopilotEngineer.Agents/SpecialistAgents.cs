@@ -2,47 +2,58 @@ using CopilotEngineer.Core;
 
 namespace CopilotEngineer.Agents;
 
-public sealed class DebugSpecialistAgent : IEngineerSpecialist
+public sealed class DebugSpecialistAgent(ISkillRegistry skillRegistry) : IEngineerSpecialist
 {
     public string Name => "DebugSpecialist";
 
-    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public async Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
-        var result = new AgentExecutionResult(
-            Name,
-            $"Analisando possivel falha reportada em '{request.Input}'.",
-            ["Correlacionar stack trace com logs.", "Verificar dependencias externas e configuracoes locais."]);
+        var skillResult = await skillRegistry.Resolve(SkillNames.AnalyzeStackTrace)
+            .ExecuteAsync(request, context, cancellationToken);
 
-        return Task.FromResult(result);
+        return new AgentExecutionResult(
+            Name,
+            skillResult.Summary,
+            skillResult.Outputs);
     }
 }
 
-public sealed class DatabaseSpecialistAgent : IEngineerSpecialist
+public sealed class DatabaseSpecialistAgent(ISkillRegistry skillRegistry) : IEngineerSpecialist
 {
     public string Name => "DatabaseSpecialist";
 
-    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public async Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
-        var result = new AgentExecutionResult(
-            Name,
-            $"Analisando consulta SQL em '{request.Input}'.",
-            ["Mapear joins criticos.", "Revisar indices e plano de execucao."]);
+        var skillResult = await skillRegistry.Resolve(SkillNames.AnalyzeSqlQuery)
+            .ExecuteAsync(request, context, cancellationToken);
 
-        return Task.FromResult(result);
+        return new AgentExecutionResult(
+            Name,
+            skillResult.Summary,
+            skillResult.Outputs);
     }
 }
 
-public sealed class CodeSpecialistAgent : IEngineerSpecialist
+public sealed class CodeSpecialistAgent(ISkillRegistry skillRegistry) : IEngineerSpecialist
 {
     public string Name => "CodeSpecialist";
 
-    public Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
+    public async Task<AgentExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default)
     {
-        var result = new AgentExecutionResult(
-            Name,
-            $"Avaliando solicitacao '{request.Input}' com base nas convencoes do projeto.",
-            ["Identificar smells de codigo.", "Sugerir proximos testes automatizados."]);
+        var primarySkillName = IsTestGenerationRequest(request.Input)
+            ? SkillNames.GenerateTests
+            : SkillNames.ReviewCode;
 
-        return Task.FromResult(result);
+        var skillResult = await skillRegistry.Resolve(primarySkillName)
+            .ExecuteAsync(request, context, cancellationToken);
+
+        return new AgentExecutionResult(
+            Name,
+            skillResult.Summary,
+            skillResult.Outputs);
     }
+
+    private static bool IsTestGenerationRequest(string input) =>
+        input.Contains("test", StringComparison.OrdinalIgnoreCase) ||
+        input.Contains("teste", StringComparison.OrdinalIgnoreCase);
 }

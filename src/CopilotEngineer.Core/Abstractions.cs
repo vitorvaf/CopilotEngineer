@@ -5,6 +5,13 @@ public interface IEngineerCore
     Task<EngineResponse> ProcessAsync(UserRequest request, CancellationToken cancellationToken = default);
 }
 
+public interface ISkill
+{
+    string Name { get; }
+
+    Task<SkillExecutionResult> ExecuteAsync(UserRequest request, EngineerContext context, CancellationToken cancellationToken = default);
+}
+
 public interface IIntentRouter
 {
     Intent Route(UserRequest request);
@@ -24,6 +31,15 @@ public interface IAgentRegistry
     IEngineerSpecialist Resolve(Intent intent);
 
     IReadOnlyCollection<IEngineerSpecialist> List();
+}
+
+public interface ISkillRegistry
+{
+    void Register(ISkill skill);
+
+    ISkill Resolve(string skillName);
+
+    IReadOnlyCollection<ISkill> List();
 }
 
 public interface IWorkflowExecutor

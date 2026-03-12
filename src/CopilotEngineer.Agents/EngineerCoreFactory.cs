@@ -8,11 +8,13 @@ public static class EngineerCoreFactory
 {
     public static IEngineerCore CreateDefault()
     {
+        var skillRegistry = SkillRegistration.CreateDefault();
+
         IEngineerSpecialist[] specialists =
         [
-            new DebugSpecialistAgent(),
-            new DatabaseSpecialistAgent(),
-            new CodeSpecialistAgent()
+            new DebugSpecialistAgent(skillRegistry),
+            new DatabaseSpecialistAgent(skillRegistry),
+            new CodeSpecialistAgent(skillRegistry)
         ];
 
         return new EngineerCore(
