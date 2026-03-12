@@ -12,4 +12,9 @@
     <ProjectReference Include="../CopilotEngineer.Workflows/CopilotEngineer.Workflows.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.18.2" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.18.2" />
+  </ItemGroup>
+
 </Project>

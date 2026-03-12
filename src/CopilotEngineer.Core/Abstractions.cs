@@ -53,3 +53,19 @@ public interface IContextProvider
 {
     Task<EngineerContext> BuildAsync(UserRequest request, Intent intent, CancellationToken cancellationToken = default);
 }
+
+public interface ILLMProvider
+{
+    Task<LlmCompletionResponse> GenerateAsync(LlmCompletionRequest request, CancellationToken cancellationToken = default);
+}
+
+public interface ILLMService
+{
+    Task<SkillExecutionResult> ExecuteSkillAsync(
+        string skillName,
+        string specialistName,
+        string instructions,
+        UserRequest request,
+        EngineerContext context,
+        CancellationToken cancellationToken = default);
+}

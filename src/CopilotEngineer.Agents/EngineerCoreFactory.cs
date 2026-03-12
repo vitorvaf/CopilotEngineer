@@ -6,10 +6,12 @@ namespace CopilotEngineer.Agents;
 
 public static class EngineerCoreFactory
 {
-    public static IEngineerCore CreateDefault()
+    public static IEngineerCore CreateDefault(ILLMProvider? llmProvider = null)
     {
         var repositoryRoot = MemoryPaths.ResolveRepositoryRoot();
-        var skillRegistry = SkillRegistration.CreateDefault();
+        llmProvider ??= SemanticKernelProvider.CreateFromEnvironment();
+        var llmService = new LLMService(llmProvider);
+        var skillRegistry = SkillRegistration.CreateDefault(llmService);
         var memoryService = new MemoryService(
             new ProjectContextLoader(Path.Combine(repositoryRoot, "memory", "project-context.yaml")),
             new ConventionsLoader(Path.Combine(repositoryRoot, "memory", "conventions.yaml")),

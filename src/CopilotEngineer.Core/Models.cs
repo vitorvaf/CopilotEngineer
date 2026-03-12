@@ -45,6 +45,13 @@ public sealed record SkillExecutionResult(
     string Summary,
     IReadOnlyCollection<string> Outputs);
 
+public sealed record LlmCompletionRequest(
+    string SystemPrompt,
+    string UserPrompt,
+    double Temperature = 0.2);
+
+public sealed record LlmCompletionResponse(string Content);
+
 public sealed record WorkflowExecutionResult(
     string WorkflowName,
     string Summary,

@@ -11,7 +11,7 @@ public sealed class BootstrapSmokeTests
     [Fact]
     public async Task EngineerCoreRoutesBootstrapRequestsCorrectly()
     {
-        var engineerCore = EngineerCoreFactory.CreateDefault();
+        var engineerCore = EngineerCoreFactory.CreateDefault(new FakeLlmProvider());
         var issueResponse = await engineerCore.ProcessAsync(new UserRequest("implementar feature de exportacao CSV"));
         Assert.Equal("issue", issueResponse.Intent.Name);
         Assert.Equal("issue-analysis", issueResponse.Source);
@@ -137,5 +137,18 @@ internal sealed class FakeEngineerCore : IEngineerCore
             "Resposta em Markdown.",
             "FakeSource",
             ["Primeira recomendacao.", "Segunda recomendacao."]));
+    }
+}
+
+internal sealed class FakeLlmProvider : ILLMProvider
+{
+    public Task<LlmCompletionResponse> GenerateAsync(LlmCompletionRequest request, CancellationToken cancellationToken = default)
+    {
+        var content =
+            """
+            {"summary":"Analise sintetizada pelo provider fake.","outputs":["Primeira recomendacao objetiva.","Segunda recomendacao objetiva."]}
+            """;
+
+        return Task.FromResult(new LlmCompletionResponse(content));
     }
 }
