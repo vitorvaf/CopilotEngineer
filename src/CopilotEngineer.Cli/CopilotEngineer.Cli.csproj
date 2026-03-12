@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../CopilotEngineer.Agents/CopilotEngineer.Agents.csproj" />
+    <ProjectReference Include="../CopilotEngineer.Core/CopilotEngineer.Core.csproj" />
+    <ProjectReference Include="../CopilotEngineer.Memory/CopilotEngineer.Memory.csproj" />
+    <ProjectReference Include="../CopilotEngineer.Workflows/CopilotEngineer.Workflows.csproj" />
+  </ItemGroup>
+
+</Project>

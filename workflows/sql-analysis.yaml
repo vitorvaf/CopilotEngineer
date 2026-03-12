@@ -1,0 +1,5 @@
+name: sql-analysis
+steps:
+  - parse-query
+  - inspect-plan
+  - suggest-indexes

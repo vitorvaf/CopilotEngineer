@@ -1,0 +1,5 @@
+name: bug-investigation
+steps:
+  - inspect-stack-trace
+  - correlate-logs
+  - suggest-fix

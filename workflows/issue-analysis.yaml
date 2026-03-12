@@ -1,0 +1,5 @@
+name: issue-analysis
+steps:
+  - classify
+  - gather-context
+  - propose-next-actions

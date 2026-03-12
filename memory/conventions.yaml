@@ -1,0 +1,8 @@
+conventions:
+  naming:
+    classes: PascalCase
+    variables: camelCase
+    interfaces: I*
+  patterns:
+    - dependency-injection
+    - modular-skills
